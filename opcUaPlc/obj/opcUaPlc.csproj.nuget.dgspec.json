@@ -49,6 +49,16 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "OPCFoundation.NetStandard.Opc.Ua": {
+              "target": "Package",
+              "version": "[1.5.377.21, )"
+            },
+            "Opc.UaFx.Client": {
+              "target": "Package",
+              "version": "[2.50.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

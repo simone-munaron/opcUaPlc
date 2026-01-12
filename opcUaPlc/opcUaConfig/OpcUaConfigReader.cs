@@ -1,60 +1,47 @@
+using System;
 using System.IO;
-using System.Reflection;
 using System.Text.Json;
 
-namespace opcUaPlc.opcUaConfig  // ← Namespace del progetto
+namespace opcUaPlc.opcUaConfig
 {
-    public class opcConfigReader
+    public class OpcConfigReader
     {
-        public static (string serverUrl, string username, string password) ReadConfig()
+        // Ora la funzione accetta il percorso del file come parametro
+        public static (string serverUrl, string username, string password) ReadConfig(string configFilePath)
         {
-            string serverUrl = "", username = "", password = "";
             try
             {
-                //// Trova root progetto (dove è config.json)
-                //string assemblyPath = Assembly.GetExecutingAssembly().Location;
-                //string binDir = Path.GetDirectoryName(assemblyPath);
-                //string projectDir = Directory.GetParent(binDir).FullName;  // Root!
+                // Se viene passata una cartella, aggiungiamo il nome del file standard
+                if (Directory.Exists(configFilePath))
+                {
+                    configFilePath = Path.Combine(configFilePath, "config.json");
+                }
 
-                // Root progetto: dove sono i file .cs e config.json
-                //string assemblyPath = Assembly.GetExecutingAssembly().Location;
-                //string binDir = Path.GetDirectoryName(assemblyPath);
-                //string projectDir = Directory.GetParent(binDir).FullName;  // Sale da bin/Debug/ alla root
-                
+                Console.WriteLine($"[Config] Tentativo di apertura: {configFilePath}");
 
-                // Parte da EXE → risale fino opcUaPlcConfig
-                string assemblyPath = Assembly.GetExecutingAssembly().Location;  // ...opcUaPlc\bin\Debug\EXE.dll
-                string netVersion = Path.GetDirectoryName(assemblyPath);    // .net version
-                string currentDir = Path.GetDirectoryName(netVersion);         // ...opcUaPlc\bin\Debug\
-                string debugDir = Path.GetDirectoryName(currentDir);             // ...opcUaPlc\bin\
-                string opcUaPlcDir = Path.GetDirectoryName(debugDir);            // ...opcUaPlc\
-                string opcUaPlcConfigDir = Path.Combine(opcUaPlcDir, "opcUaConfig");  // ...opcUaPlc\opcUaPlcConfig ✓
+                if (!File.Exists(configFilePath))
+                    throw new FileNotFoundException($"File non trovato in: {configFilePath}");
 
-                string jsonPath = Path.Combine(opcUaPlcConfigDir, "config.json");
+                string json = File.ReadAllText(configFilePath);
+                
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var config = JsonSerializer.Deserialize<OpcConfigModel>(json, options);
 
-                //string jsonPath = Path.Combine(projectDir, "config.json");
-                Console.WriteLine($"[Config] Cerco: {jsonPath}");
-                
-                if (!File.Exists(jsonPath))
-                    throw new FileNotFoundException($"Manca: {jsonPath}");
-                
-                string json = File.ReadAllText(jsonPath);
-                var configData = JsonSerializer.Deserialize<JsonElement>(json);
-                
-                serverUrl = configData.GetProperty("serverUrl").GetString();
-                username = configData.GetProperty("username").GetString();
-                password = configData.GetProperty("password").GetString();
-                
-                Console.WriteLine("[Config] Caricato!");
+                Console.WriteLine("[Config] Caricato con successo!");
+                return (config.ServerUrl, config.Username, config.Password);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[Config] Errore: {ex.Message}");
-                serverUrl = "";
-                username = "";
-                password = "";
+                return ("", "", "");
             }
-            return (serverUrl, username, password);
         }
+    }
+
+    public class OpcConfigModel
+    {
+        public string ServerUrl { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
