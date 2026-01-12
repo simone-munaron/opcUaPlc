@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("opcUaPlc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3eea60be6a549916d93f1f053a4ba39085d156fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9678240c9ae6fc157ecfe439ffc6cac8bb238e54")]
 [assembly: System.Reflection.AssemblyProductAttribute("opcUaPlc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("opcUaPlc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

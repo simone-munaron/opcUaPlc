@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace opcUaPlc.opcUaConfig
+namespace opcUaPlc
 {
     public class OpcConfigReader
     {

@@ -37,7 +37,7 @@ namespace opcUaPlc
         {
             // Verifichiamo lo stato dell'istanza persistente
             if (_client.State == OpcClientState.Connected)
-                Console.WriteLine($"Stato: Connesso ({_serverUrl})");
+                Console.WriteLine($"Stato: {_client.State} ({_serverUrl})");
             else
                 Console.WriteLine($"Stato: {_client.State} ({_serverUrl})");
         }
