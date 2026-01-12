@@ -3,49 +3,46 @@ using Opc.UaFx;
 using Opc.UaFx.Client;
 using System.Text.Json;
 using System.IO;
-using OpcConfigReader/OpcConfigReader;
 
 string serverUrl = "";
 string username = "";
 string password = "";
 
-//try
-//{
-//    // Percorso dalla root del progetto (cartella .cs)
-//    //string projectDir = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-//    //projectDir = Directory.GetParent(projectDir).FullName;  // Sale di un livello da bin/
-//    string projectDir = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC";
-//
-//    string jsonPath = Path.Combine(projectDir, "config.json");
-//    Console.WriteLine($"Cerco config.json in: {jsonPath}");
-//    
-//    if (!File.Exists(jsonPath))
-//        throw new FileNotFoundException($"File non trovato: {jsonPath}");
-//    
-//    string json = File.ReadAllText(jsonPath);
-//    var config = JsonSerializer.Deserialize<JsonElement>(json);
-//    serverUrl = config.GetProperty("serverUrl").GetString();
-//    username = config.GetProperty("username").GetString();
-//    password = config.GetProperty("password").GetString();
-//    
-//    Console.WriteLine("Config caricato dalla root progetto!");
-//}
-//catch
-//{
-//    // Fallback hardcoded solo se necessario
-//    Console.WriteLine("Non è stato possibile leggere il file config.json");   
-//
-//    // Aspetta tasto per vedere output
-//    //Console.WriteLine("Premi un tasto per terminare...");
-//    //Console.ReadKey();  // Pausa comune
-//
-//    // Oppure timeout specifico
-//    Console.WriteLine("Terminando in 3 secondi...");
-//    Thread.Sleep(3000);
-//    return;
-//}
+try
+{
+    // Percorso dalla root del progetto (cartella .cs)
+    //string projectDir = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+    //projectDir = Directory.GetParent(projectDir).FullName;  // Sale di un livello da bin/
+    string projectDir = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC";
 
-var (serverUrl, username, password) = OpcConfigReader.ReadConfig();
+    string jsonPath = Path.Combine(projectDir, "config.json");
+    Console.WriteLine($"Cerco config.json in: {jsonPath}");
+    
+    if (!File.Exists(jsonPath))
+        throw new FileNotFoundException($"File non trovato: {jsonPath}");
+    
+    string json = File.ReadAllText(jsonPath);
+    var config = JsonSerializer.Deserialize<JsonElement>(json);
+    serverUrl = config.GetProperty("serverUrl").GetString();
+    username = config.GetProperty("username").GetString();
+    password = config.GetProperty("password").GetString();
+    
+    Console.WriteLine("Config caricato dalla root progetto!");
+}
+catch
+{
+    // Fallback hardcoded solo se necessario
+    Console.WriteLine("Non è stato possibile leggere il file config.json");   
+
+    // Aspetta tasto per vedere output
+    //Console.WriteLine("Premi un tasto per terminare...");
+    //Console.ReadKey();  // Pausa comune
+
+    // Oppure timeout specifico
+    Console.WriteLine("Terminando in 3 secondi...");
+    Thread.Sleep(3000);
+    return;
+}
 
 Console.Write("Inserisci il NodeId da leggere: ");
 string nodeId = Console.ReadLine();
