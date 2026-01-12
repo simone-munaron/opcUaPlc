@@ -12,16 +12,37 @@ class Program
 
         // Inizializzo la connessione globale
         _OpcUaConnection = new OpcUaConnection(serverUrl, username, password);
-        
-        // Avvio la connessione
-        _OpcUaConnection.Start(); 
-        // Controllo lo stato della connessione
-        _OpcUaConnection.Status();
+        bool status;   
+        status = _OpcUaConnection.Start(); // Avvio la connessione
+            if (status)
+            {
+                Console.WriteLine("true");
+            }
+            else
+            {
+                Console.WriteLine("false");
+            }
 
-        Thread.Sleep(2000);
-        // Chiudo la connessione alla fine del programma
-        _OpcUaConnection.Stop();
-        
+        status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
+            if (status)
+            {
+                Console.WriteLine("true");
+            }
+            else
+            {
+                Console.WriteLine("false");
+            }
+
+
+        status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
+            if (status)
+            {
+                Console.WriteLine("true");
+            }
+            else
+            {
+                Console.WriteLine("false");
+            }
 
     }
 }

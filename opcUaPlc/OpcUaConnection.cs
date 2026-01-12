@@ -4,7 +4,7 @@ using Opc.UaFx.Client;
 
 namespace opcUaPlc
 {
-    public class OpcUaConnection : IDisposable // Implementiamo IDisposable per pulizia
+    public class OpcUaConnection : IDisposable
     {
         private readonly OpcClient _client;
         private readonly string _serverUrl;
@@ -16,30 +16,44 @@ namespace opcUaPlc
             _client.Security.UserIdentity = new OpcClientIdentity(username, password);
         }
 
-        public void Start()
+        // Restituisce true se la connessione avviene con successo
+        public bool Start()
         {
-            try {
+            try 
+            {
                 _client.Connect();
-                Console.WriteLine($"\nConnesso al server OPC UA: {_serverUrl}!");
+                Console.WriteLine($"Connesso a: {_serverUrl}");
+                return true;
             }
-            catch (Exception ex) {
+            catch (Exception ex) 
+            {
                 Console.WriteLine($"Errore connessione: {ex.Message}");
+                return false;
             }
         }
 
-        public void Stop()
+        // Restituisce true se la disconnessione avviene senza errori
+        public bool Stop()
         {
-            _client.Disconnect();
-            Console.WriteLine($"Disconnesso da: {_serverUrl}");
+            try
+            {
+                _client.Disconnect();
+                Console.WriteLine($"Disconnesso da: {_serverUrl}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Errore disconnessione: {ex.Message}");
+                return false;
+            }
         }
 
-        public void Status()
+        // Restituisce true se lo stato attuale è "Connected"
+        public bool Status()
         {
-            // Verifichiamo lo stato dell'istanza persistente
-            if (_client.State == OpcClientState.Connected)
-                Console.WriteLine($"Stato: {_client.State} ({_serverUrl})");
-            else
-                Console.WriteLine($"Stato: {_client.State} ({_serverUrl})");
+            bool isConnected = _client.State == OpcClientState.Connected;
+            Console.WriteLine($"Stato attuale: {_client.State} ({_serverUrl})");
+            return isConnected;
         }
 
         public void Dispose()
