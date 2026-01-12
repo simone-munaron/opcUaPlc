@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+321ebcb38e3e58dfe51fabb37616889094c05b01")]
 [assembly: System.Reflection.AssemblyProductAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -14,24 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Prj\\OPC_UA_PLC\\OPC_UA_PLC\\Program.cs",
               "RelativeDocumentMoniker": "OPC_UA_PLC\\Program.cs",
-              "ToolTip": "C:\\Prj\\OPC_UA_PLC\\OPC_UA_PLC\\Program.cs*",
-              "RelativeToolTip": "OPC_UA_PLC\\Program.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "ToolTip": "C:\\Prj\\OPC_UA_PLC\\OPC_UA_PLC\\Program.cs",
+              "RelativeToolTip": "OPC_UA_PLC\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-12T08:40:56.431Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             }
           ]
         }
