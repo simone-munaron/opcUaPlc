@@ -28,7 +28,7 @@ namespace opcUaPlc
                 var config = JsonSerializer.Deserialize<OpcConfigModel>(json, options);
 
                 Console.WriteLine("[Config] Caricato con successo!");
-                return (config.ServerUrl, config.Username, config.Password);
+                return (config?.ServerUrl ?? "", config?.Username ?? "", config?.Password ?? "");
             }
             catch (Exception ex)
             {
@@ -40,8 +40,8 @@ namespace opcUaPlc
 
     public class OpcConfigModel
     {
-        public string ServerUrl { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public required string ServerUrl { get; set; }
+        public required string Username { get; set; }
+        public required string Password { get; set; }
     }
 }
