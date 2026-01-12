@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ddfaadf0e1240e9a122b6b053987258b3f3e0936")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d851103c1ce940aa676d15f15acacadc86779fec")]
 [assembly: System.Reflection.AssemblyProductAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OPC_UA_PLC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
