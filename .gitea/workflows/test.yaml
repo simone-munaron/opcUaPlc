@@ -3,7 +3,7 @@ on: [push, pull_request]  # Trigger su push/PR
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # Matcha label runner
+    runs-on: ubuntu-22.04  # Matcha label runner
     steps:
     - name: Checkout
       uses: actions/checkout@v4
