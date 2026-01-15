@@ -15,10 +15,13 @@ jobs:
 
     - name: Exclude files  # La tua versione perfetta
       run: |
+        # Tracked files
         git rm -r --cached .gitea/workflows || true
         git rm -r --cached opcUaConfig/opcUaConfig.json || true
+        
+        # Untracked files  
         git clean -fd .gitea/workflows || true
-        git clean -fd opcUaConfig/ || true
+        git clean -fd opcUaConfig/opcUaConfig.json || true
 
     - name: Sync to GitHub
       env:
