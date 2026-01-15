@@ -9,8 +9,6 @@ class Program
         Console.WriteLine("\n\n"); // Spazio per la leggibilità nella console
 
         //Read config file config.json
-        //string path = @"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\opcUaConfig.json";
-        //var (serverUrl, username, password) = OpcConfigReader.ReadConfig(path);
         var (serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
 
 
