@@ -1,7 +1,7 @@
 # Cartelle di output della compilazione
 [Bb]in/
 [Oo]bj/
-#CertificateStores/
+CertificateStores/
 
 # File specifici di VS Code
 .vscode/
