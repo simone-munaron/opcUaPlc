@@ -69,24 +69,24 @@ namespace opcUaPlc
                 Console.WriteLine("Client non connesso!");
                 return (false, null, 0, OpcStatusCode.BadNotConnected);
             }
-
+        
             try
             {
                 Console.WriteLine($"Lettura nodo: {nodeId}");
-
+        
                 OpcValue opcValue = _client.ReadNode(nodeId);
-
+        
                 if (opcValue.Status.IsGood)
                 {
                     object? value = opcValue.Value;
-                    int byteLength = 0;
-
+                    int byteLength = 0; // Default 0
+        
                     if (value is byte[] byteArray)
                     {
                         byteLength = byteArray.Length;
-                        Console.WriteLine($"Byte array len: {byteLength}, raw: {BitConverter.ToString(byteArray)}");
-
-                        // Parsing specifico
+                        Console.WriteLine($"ByteString trovato (len: {byteLength}), raw: {BitConverter.ToString(byteArray)}");
+        
+                        // Parsing Siemens REAL/DINT (ByteString comune) [web:77][web:73]
                         value = byteArray.Length switch
                         {
                             4 => BitConverter.ToSingle(byteArray, 0),
@@ -95,8 +95,22 @@ namespace opcUaPlc
                             _ => byteArray
                         };
                     }
-
-                    Console.WriteLine($"Valore estratto: {value} | Timestamp: {opcValue.SourceTimestamp}");
+                    else
+                    {
+                        // Tipo nativo (Float/Int etc.)
+                        Console.WriteLine($"Tipo nativo: {value?.GetType().Name}");
+                        // Stima length per tipi primitivi
+                        byteLength = value switch
+                        {
+                            float => 4,
+                            double => 8,
+                            short or ushort => 2,
+                            int => 4,
+                            _ => 0
+                        };
+                    }
+        
+                    Console.WriteLine($"Valore finale: {value} (ByteLength: {byteLength}) | Timestamp: {opcValue.SourceTimestamp}");
                     return (true, value, byteLength, opcValue.Status.Code);
                 }
                 else
@@ -111,6 +125,5 @@ namespace opcUaPlc
                 return (false, null, 0, OpcStatusCode.BadUnexpectedError);
             }
         }
-
     }
 }
