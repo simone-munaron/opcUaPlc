@@ -8,42 +8,35 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Gitea repo
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
       with:
         ref: github-release
         fetch-depth: 0
 
-    - name: Exclude Gitea workflows + config
+    - name: Exclude files  # ← LA TUA VERSIONE
       run: |
         git rm -r --cached .gitea/workflows || true
         git rm -r --cached opcUaConfig/opcUaConfig.json || true
         git clean -fd .gitea/workflows || true
-        git clean -fd opcUaConfig/ || true  # Cartella intera
+        git clean -fd opcUaConfig/ || true
 
     - name: Sync to GitHub
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        GH_REPO_OPCUAPLC: ${{ secrets.GH_REPO_OPCUAPLC }}  # ← OK se così lo chiami
+        GH_REPO_OPCUAPLC: ${{ secrets.GH_REPO_OPCUAPLC }}
       run: |
         git config --global user.name "Gitea Action"
         git config --global user.email "action@gitea.local"
         
-        # ✅ FIX: --all PRIMA del remote
         git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO_OPCUAPLC}.git"
-        git fetch --all --prune --tags github  # ← Corretto!
+        git fetch github +refs/heads/*:refs/remotes/github/* --prune --tags  # ✅ Fetch fix
         
-        # Detect branch
         DEFAULT_BRANCH=$(git symbolic-ref -q refs/remotes/github/HEAD | sed 's@^refs/remotes/github/@@' || echo "main")
-        echo "🎯 GitHub branch: $DEFAULT_BRANCH"
+        echo "🎯 $DEFAULT_BRANCH"
         
-        # Pulizia + checkout forzato
-        git clean -fdx
-        git checkout --force -B sync-main github/$DEFAULT_BRANCH
+        git checkout --force -B sync-main "github/$DEFAULT_BRANCH"
+        git merge github-release -m "Sync $(date)"
+        git push github sync-main:"$DEFAULT_BRANCH" --force-with-lease
         
-        # Merge + push
-        git merge github-release --no-ff -m "Auto-sync Gitea github-release -> $DEFAULT_BRANCH $(date)"
-        git push github sync-main:$DEFAULT_BRANCH --force-with-lease
-        
-        echo "✅ Completato!"
+        echo "✅ Completato"
         git remote remove github
