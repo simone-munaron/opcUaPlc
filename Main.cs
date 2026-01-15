@@ -1,4 +1,5 @@
-﻿using opcUaPlc;
+﻿using Opc.Ua;
+using opcUaPlc;
 
 class Program
 {
@@ -16,34 +17,12 @@ class Program
         _OpcUaConnection = new OpcUaConnection(serverUrl, username, password);
         bool status;   
         status = _OpcUaConnection.Start(); // Avvio la connessione
-            if (status){
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
-
         status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
-            if (status)
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
 
-
+        var (success, value, length, statusCode) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
+   
         status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
-            if (status)
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
+
         
         // Mantiene aperta la console fino a quando non si preme Invio
         Console.WriteLine("\n\n\n********** Press enter to exit **********");
