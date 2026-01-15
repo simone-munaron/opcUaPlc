@@ -1,12 +1,10 @@
-## Add solution on dotnet
+# Add solution on dotnet
     dotnet new sln -n opcUaPlc
     dotnet sln add opcUaPlc.csproj
 
 
 
-
-
-## OpcUaConfigReader.cs
+# OpcUaConfigReader.cs
 ### Description
     Use for read configuration on opcUaConfig.json:
     Input: string configFilePath
@@ -26,7 +24,7 @@
 
 
 
-## OpcUaConnection.cs
+# OpcUaConnection.cs
 ### Description
     Use for start, stop and check the connection status
     Use always global init
