@@ -62,12 +62,12 @@ namespace opcUaPlc
             _client?.Dispose();
         }
 
-        public (bool Success, object? Value, int ByteLength, OpcStatusCode Status) ReadVariable(string nodeId)
+        public (bool Success, object? Value, int ByteLength, OpcStatusCode Status, string VariableType) ReadVariable(string nodeId)
         {
             if (_client == null || _client.State != OpcClientState.Connected)
             {
                 Console.WriteLine("Client non connesso!");
-                return (false, null, 0, OpcStatusCode.BadNotConnected);
+                return (false, null, 0, OpcStatusCode.BadNotConnected, "");
             }
 
             try
@@ -79,14 +79,14 @@ namespace opcUaPlc
                 if (opcValue.Status.IsGood)
                 {
                     object? value = opcValue.Value;
-                    int byteLength = 0;
+                    int byteLength = 0; // Default 0
 
                     if (value is byte[] byteArray)
                     {
                         byteLength = byteArray.Length;
-                        Console.WriteLine($"Byte array len: {byteLength}, raw: {BitConverter.ToString(byteArray)}");
+                        Console.WriteLine($"ByteString trovato (len: {byteLength}), raw: {BitConverter.ToString(byteArray)}");
 
-                        // Parsing specifico
+                        // Parsing Siemens REAL/DINT (ByteString comune) [web:77][web:73]
                         value = byteArray.Length switch
                         {
                             4 => BitConverter.ToSingle(byteArray, 0),
@@ -95,22 +95,35 @@ namespace opcUaPlc
                             _ => byteArray
                         };
                     }
+                    else
+                    {
+                        // Tipo nativo (Float/Int etc.)
+                        Console.WriteLine($"Tipo nativo: {value?.GetType().Name}");
+                        // Stima length per tipi primitivi
+                        byteLength = value switch
+                        {
+                            float => 4,
+                            double => 8,
+                            short or ushort => 2,
+                            int => 4,
+                            _ => 0
+                        };
+                    }
 
-                    Console.WriteLine($"Valore estratto: {value} | Timestamp: {opcValue.SourceTimestamp}");
-                    return (true, value, byteLength, opcValue.Status.Code);
+                    Console.WriteLine($"Valore finale: {value} (ByteLength: {byteLength}) | Timestamp: {opcValue.SourceTimestamp}");
+                    return (true, value, byteLength, opcValue.Status.Code, opcValue.Value?.GetType().Name ?? "");
                 }
                 else
                 {
                     Console.WriteLine($"Status error: {opcValue.Status}");
-                    return (false, null, 0, opcValue.Status.Code);
+                    return (false, null, 0, opcValue.Status.Code, "");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception: {ex.Message}");
-                return (false, null, 0, OpcStatusCode.BadUnexpectedError);
+                return (false, null, 0, OpcStatusCode.BadUnexpectedError, "");
             }
         }
-
     }
 }

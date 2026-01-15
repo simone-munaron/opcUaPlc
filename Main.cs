@@ -19,8 +19,9 @@ class Program
         status = _OpcUaConnection.Start(); // Avvio la connessione
         status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
 
-        var (success, value, length, statusCode) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
-   
+        var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
+        Console.WriteLine($"Lettura variabile: Success={success}, Value={value}, Length={length}, StatusCode={statusCode}, Type={variableType}");
+
         status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
 
         
