@@ -1,4 +1,4 @@
-name: Sync github-release → opcUaPlc main (no workflows)
+name: Sync github-release → opcUaPlc
 
 on:
   push:
@@ -16,33 +16,36 @@ jobs:
 
     - name: Exclude Gitea workflows
       run: |
-        # Rimuovi solo cartella .gitea/workflows dal staging/index
         git rm -r --cached .gitea/workflows || true
-        git rm -r --cached opcUaConfig/opcUaConfig.json
-        git clean -fd .gitea/workflows || true  # Non tracciati
+        git rm -r --cached opcUaConfig/opcUaConfig.json || true
+        git clean -fd .gitea/workflows || true  # Non tracciati        
+        git clean -fd opcUaConfig/opcUaConfig.json || true # Non tracciati  
 
     - name: Sync to GitHub
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        GITHUB_REPO: ${{ secrets.GH_REPO_OPCUAPLC }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_REPO: ${{ secrets.GH_REPO_OPCUAPLC }}
       run: |
         git config --global user.name "Gitea Action"
         git config --global user.email "action@gitea.local"
         
-        git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
-        git fetch github
+        # Aggiungi remote e fetch completo
+        git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO_OPCUAPLC}.git"
+        git fetch github --all --prune --tags
         
-        git checkout -b sync-main github/main
+        # Detect branch default
+        DEFAULT_BRANCH=$(git symbolic-ref -q refs/remotes/github/HEAD | sed 's@^refs/remotes/github/@@' || echo "main")
+        echo "🎯 GitHub branch: $DEFAULT_BRANCH"
         
-        # Merge escludendo .gitea/ (non nel nuovo branch)
-        if git merge github-release --no-ff -m "Auto-merge Gitea github-release $(date)"; then
-          # Push solo cambiamenti non-.gitea
-          git push github sync-main:main --force-with-lease
-          echo "✅ Sync su GitHub main (senza .gitea/workflows)"
-        else
-          echo "❌ Conflict, risolvi manual"
-          exit 1
-        fi
+        # Pulisci working dir (fix errore untracked files)
+        git clean -fdx
+        git checkout --force -B sync-main github/$DEFAULT_BRANCH
         
+        # Merge sicuro
+        git merge github-release --no-ff -m "Auto-sync Gitea github-release -> $DEFAULT_BRANCH $(date)"
+        
+        # Push
+        git push github sync-main:$DEFAULT_BRANCH --force-with-lease
+        
+        echo "✅ Completato!"
         git remote remove github
-        git branch -D sync-main
