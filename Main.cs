@@ -6,16 +6,19 @@ class Program
     private static OpcUaConnection? _OpcUaConnection;
     static void Main()
     {
+        Console.WriteLine("\n\n"); // Spazio per la leggibilità nella console
+
         //Read config file config.json
-        string path = @"C:\Prj\opcUaPlc\opcUaConfig\config.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\config.json";
-        var (serverUrl, username, password) = OpcConfigReader.ReadConfig(path);
+        //string path = @"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\opcUaConfig.json";
+        //var (serverUrl, username, password) = OpcConfigReader.ReadConfig(path);
+        var (serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
+
 
         // Inizializzo la connessione globale
         _OpcUaConnection = new OpcUaConnection(serverUrl, username, password);
         bool status;   
         status = _OpcUaConnection.Start(); // Avvio la connessione
-            if (status)
-            {
+            if (status){
                 Console.WriteLine("true");
             }
             else
@@ -45,7 +48,7 @@ class Program
             }
         
         // Mantiene aperta la console fino a quando non si preme Invio
-        Console.WriteLine("\n\n********** Press enter to exit **********");
+        Console.WriteLine("\n\n\n********** Press enter to exit **********");
         Console.ReadLine();
     }
 }
