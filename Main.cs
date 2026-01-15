@@ -43,6 +43,9 @@ class Program
             {
                 Console.WriteLine("false");
             }
-
+        
+        // Mantiene aperta la console fino a quando non si preme Invio
+        Console.WriteLine("\n\n********** Press enter to exit **********");
+        Console.ReadLine();
     }
 }
