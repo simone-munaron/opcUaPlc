@@ -3,7 +3,10 @@ dotnet new sln -n opcUaPlc
 dotnet sln add opcUaPlc.csproj
 
 ## OpcUaConfigReader.cs
-Use for read configuration on opcUaConfig.json
+#### Description
+Use for read configuration on opcUaConfig.json:
+Input: string configFilePath
+Output: string serverUrl, string username, string password
 
-*Example*
+#### Example
 var (serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
