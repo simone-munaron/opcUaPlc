@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OPC_UA_Search")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d851103c1ce940aa676d15f15acacadc86779fec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5dc714d2125c3ea84ad0d710e15e48726f06ea42")]
 [assembly: System.Reflection.AssemblyProductAttribute("OPC_UA_Search")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OPC_UA_Search")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
