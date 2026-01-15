@@ -62,30 +62,30 @@ namespace opcUaPlc
             _client?.Dispose();
         }
 
-        public (bool Success, object? Value, int ByteLength, OpcStatusCode Status) ReadVariable(string nodeId)
+        public (bool Success, object? Value, int ByteLength, OpcStatusCode Status, string VariableType) ReadVariable(string nodeId)
         {
             if (_client == null || _client.State != OpcClientState.Connected)
             {
                 Console.WriteLine("Client non connesso!");
-                return (false, null, 0, OpcStatusCode.BadNotConnected);
+                return (false, null, 0, OpcStatusCode.BadNotConnected, "");
             }
-        
+
             try
             {
                 Console.WriteLine($"Lettura nodo: {nodeId}");
-        
+
                 OpcValue opcValue = _client.ReadNode(nodeId);
-        
+
                 if (opcValue.Status.IsGood)
                 {
                     object? value = opcValue.Value;
                     int byteLength = 0; // Default 0
-        
+
                     if (value is byte[] byteArray)
                     {
                         byteLength = byteArray.Length;
                         Console.WriteLine($"ByteString trovato (len: {byteLength}), raw: {BitConverter.ToString(byteArray)}");
-        
+
                         // Parsing Siemens REAL/DINT (ByteString comune) [web:77][web:73]
                         value = byteArray.Length switch
                         {
@@ -109,20 +109,20 @@ namespace opcUaPlc
                             _ => 0
                         };
                     }
-        
+
                     Console.WriteLine($"Valore finale: {value} (ByteLength: {byteLength}) | Timestamp: {opcValue.SourceTimestamp}");
-                    return (true, value, byteLength, opcValue.Status.Code);
+                    return (true, value, byteLength, opcValue.Status.Code, opcValue.Value?.GetType().Name ?? "");
                 }
                 else
                 {
                     Console.WriteLine($"Status error: {opcValue.Status}");
-                    return (false, null, 0, opcValue.Status.Code);
+                    return (false, null, 0, opcValue.Status.Code, "");
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Exception: {ex.Message}");
-                return (false, null, 0, OpcStatusCode.BadUnexpectedError);
+                return (false, null, 0, OpcStatusCode.BadUnexpectedError, "");
             }
         }
     }
