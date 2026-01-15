@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 using System.Text.Json;
@@ -109,3 +110,4 @@ catch (Exception ex)
 
 Console.WriteLine("\nPremi un tasto per uscire...");
 Console.ReadKey();
+*/

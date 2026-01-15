@@ -1,10 +1,11 @@
-﻿using System;
+﻿/*
+using System;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 
-class Program
+partial class Program
 {
-    static void Main(string[] args)
+    static void Main2(string[] args)
     {
         string serverUrl = "opc.tcp://10.69.131.1";
         string username = "OPC_UA";
@@ -59,3 +60,4 @@ class Program
         }
     }
 }
+*/

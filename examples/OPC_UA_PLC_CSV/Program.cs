@@ -1,11 +1,17 @@
-﻿using System;
+﻿/*using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 
-string serverUrl = "opc.tcp://10.69.131.1";
+namespace OpcUaPlcCsv
+{
+    public partial class Program
+    {
+        static void Main(string[] args)
+        {
+           string serverUrl = "opc.tcp://10.69.131.1";
 string username = "OPC_UA";
 string password = "L3asOpc_uA";
 
@@ -103,4 +109,9 @@ static string EscapeCsvField(string field)
     }
 
     return field;
+        }
+    }
 }
+}
+
+*/

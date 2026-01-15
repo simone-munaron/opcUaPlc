@@ -1,10 +1,11 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Opc.UaFx;
 using Opc.UaFx.Client;
 
-class Program
+partial class Program
 {
     static void Main(string[] args)
     {
@@ -255,3 +256,4 @@ class Program
         };
     }
 }
+*/

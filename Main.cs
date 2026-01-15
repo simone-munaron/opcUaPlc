@@ -7,7 +7,7 @@ class Program
     static void Main()
     {
         //Read config file config.json
-        string path = @"C:\Prj\opcUaPlc\opcUaPlc\opcUaConfig\config.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\config.json";
+        string path = @"C:\Prj\opcUaPlc\opcUaConfig\config.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\config.json";
         var (serverUrl, username, password) = OpcConfigReader.ReadConfig(path);
 
         // Inizializzo la connessione globale
