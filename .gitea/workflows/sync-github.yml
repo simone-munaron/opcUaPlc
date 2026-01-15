@@ -14,37 +14,35 @@ jobs:
         ref: github-release
         fetch-depth: 0
 
-    - name: Exclude Gitea workflows
+    - name: Exclude Gitea workflows + config
       run: |
         git rm -r --cached .gitea/workflows || true
         git rm -r --cached opcUaConfig/opcUaConfig.json || true
-        git clean -fd .gitea/workflows || true  # Non tracciati        
-        git clean -fd opcUaConfig/opcUaConfig.json || true # Non tracciati  
+        git clean -fd .gitea/workflows || true
+        git clean -fd opcUaConfig/ || true  # Cartella intera
 
     - name: Sync to GitHub
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        GH_REPO: ${{ secrets.GH_REPO_OPCUAPLC }}
+        GH_REPO_OPCUAPLC: ${{ secrets.GH_REPO_OPCUAPLC }}  # ← OK se così lo chiami
       run: |
         git config --global user.name "Gitea Action"
         git config --global user.email "action@gitea.local"
         
-        # Aggiungi remote e fetch completo
+        # ✅ FIX: --all PRIMA del remote
         git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO_OPCUAPLC}.git"
-        git fetch github --all --prune --tags
+        git fetch --all --prune --tags github  # ← Corretto!
         
-        # Detect branch default
+        # Detect branch
         DEFAULT_BRANCH=$(git symbolic-ref -q refs/remotes/github/HEAD | sed 's@^refs/remotes/github/@@' || echo "main")
         echo "🎯 GitHub branch: $DEFAULT_BRANCH"
         
-        # Pulisci working dir (fix errore untracked files)
+        # Pulizia + checkout forzato
         git clean -fdx
         git checkout --force -B sync-main github/$DEFAULT_BRANCH
         
-        # Merge sicuro
+        # Merge + push
         git merge github-release --no-ff -m "Auto-sync Gitea github-release -> $DEFAULT_BRANCH $(date)"
-        
-        # Push
         git push github sync-main:$DEFAULT_BRANCH --force-with-lease
         
         echo "✅ Completato!"
