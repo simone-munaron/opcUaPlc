@@ -8,7 +8,7 @@ namespace opcUaPlc
     public class OpcConfigReader
     {
         // Ora la funzione accetta il percorso del file come parametro
-        public static (string serverUrl, string username, string password) ReadConfig(string configFilePath)
+        public static (bool success, string serverUrl, string username, string password, string message) ReadConfig(string configFilePath)
         {
             try
             {
@@ -18,7 +18,7 @@ namespace opcUaPlc
                     configFilePath = Path.Combine(configFilePath, "config.json");
                 }
 
-                Console.WriteLine($"[Config] Tentativo di apertura: {configFilePath}");
+                //Console.WriteLine($"[Config] Tentativo di apertura: {configFilePath}");
 
                 if (!File.Exists(configFilePath))
                     throw new FileNotFoundException($"File non trovato in: {configFilePath}");
@@ -28,13 +28,13 @@ namespace opcUaPlc
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var config = JsonSerializer.Deserialize<OpcConfigModel>(json, options);
 
-                Console.WriteLine("[Config] Caricato con successo!");
-                return (config?.ServerUrl ?? "", config?.Username ?? "", config?.Password ?? "");
+                //Console.WriteLine("[Config] Caricato con successo!");
+                return (true, config?.ServerUrl ?? "", config?.Username ?? "", config?.Password ?? "", "");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[Config] Errore: {ex.Message}");
-                return ("", "", "");
+                //Console.WriteLine($"[Config] Errore: {ex.Message}");
+                return (false, "", "", "", ex.Message);
             }
         }
     }

@@ -4,11 +4,13 @@
 
 
 
+
+
 # OpcUaConfigReader.cs
 ### Description
     Use for read configuration on opcUaConfig.json:
     Input: string configFilePath
-    Output: string serverUrl, string username, string password
+    Output: bool success, string serverUrl, string username, string password
 ### Example file config
 `opcUaConfig.json`
 
@@ -18,7 +20,7 @@
       "password": "password"
     }
 ### Example call
-    var (serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
+    var (success, serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
 
 
 
