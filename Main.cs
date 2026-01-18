@@ -1,4 +1,5 @@
-﻿using opcUaPlc;
+﻿using Opc.Ua;
+using opcUaPlc;
 
 class Program
 {
@@ -6,43 +7,33 @@ class Program
     private static OpcUaConnection? _OpcUaConnection;
     static void Main()
     {
+        Console.WriteLine("\n\n"); // Spazio per la leggibilità nella console
+
         //Read config file config.json
-        string path = @"C:\Prj\opcUaPlc\opcUaPlc\opcUaConfig\config.json"; //Esempio di percorso alternativo: string path = @"C:\Prj\OPC_UA_PLC\OPC_UA_PLC\config.json";
-        var (serverUrl, username, password) = OpcConfigReader.ReadConfig(path);
+        var (fileReadSuccess, serverUrl, username, password, fileReadMessage) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
+        if (!fileReadSuccess)
+        {
+            Console.WriteLine("Errore durante la lettura del file di configurazione: Codice errore:");
+            Console.WriteLine(fileReadMessage);
+            return;
+        }
+
+
 
         // Inizializzo la connessione globale
         _OpcUaConnection = new OpcUaConnection(serverUrl, username, password);
         bool status;   
         status = _OpcUaConnection.Start(); // Avvio la connessione
-            if (status)
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
-
         status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
-            if (status)
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
 
+        var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
+        Console.WriteLine($"Lettura variabile: Success={success}, Value={value}, Length={length}, StatusCode={statusCode}, Type={variableType}");
 
         status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
-            if (status)
-            {
-                Console.WriteLine("true");
-            }
-            else
-            {
-                Console.WriteLine("false");
-            }
 
+        
+        // Mantiene aperta la console fino a quando non si preme Invio
+        Console.WriteLine("\n\n\n********** Press enter to exit **********");
+        Console.ReadLine();
     }
 }

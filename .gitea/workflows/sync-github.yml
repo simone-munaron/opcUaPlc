@@ -1,0 +1,48 @@
+name: Sync github-release → opcUaPlc
+
+on:
+  push:
+    branches: [ github-release ]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: github-release
+        fetch-depth: 0
+
+    - name: Exclude files  # La tua versione perfetta
+      run: |
+        # Tracked files
+        git rm -r --cached .gitea/workflows || true
+        git rm -r --cached opcUaConfig/opcUaConfig.json || true
+        
+        # Untracked files  
+        git clean -fd .gitea/workflows || true
+        git clean -fd opcUaConfig/opcUaConfig.json || true
+
+    - name: Sync to GitHub
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_REPO_OPCUAPLC: ${{ secrets.GH_REPO_OPCUAPLC }}
+      run: |
+        git config --global user.name "Gitea Action"
+        git config --global user.email "action@gitea.local"
+        
+        git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO_OPCUAPLC}.git"
+        git fetch github +refs/heads/*:refs/remotes/github/* --prune --tags
+        
+        DEFAULT_BRANCH=$(git symbolic-ref -q refs/remotes/github/HEAD | sed 's@^refs/remotes/github/@@' || echo "main")
+        echo "🎯 $DEFAULT_BRANCH"
+        
+        git checkout --force -B sync-main "github/$DEFAULT_BRANCH"
+        
+        # ✅ FIX: allow unrelated histories (primo merge)
+        git merge github-release -m "Sync Gitea github-release -> $DEFAULT_BRANCH $(date)" --allow-unrelated-histories
+        
+        git push github sync-main:"$DEFAULT_BRANCH" --force-with-lease
+        
+        echo "✅ Completato!"
+        git remote remove github
