@@ -10,7 +10,14 @@ class Program
         Console.WriteLine("\n\n"); // Spazio per la leggibilità nella console
 
         //Read config file config.json
-        var (serverUrl, username, password) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
+        var (fileReadSuccess, serverUrl, username, password, fileReadMessage) = OpcConfigReader.ReadConfig(@"C:\Prj\opcUaPlc\opcUaConfig\opcUaConfig.json");
+        if (!fileReadSuccess)
+        {
+            Console.WriteLine("Errore durante la lettura del file di configurazione: Codice errore:");
+            Console.WriteLine(fileReadMessage);
+            return;
+        }
+
 
 
         // Inizializzo la connessione globale
