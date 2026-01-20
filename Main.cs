@@ -1,4 +1,5 @@
 ﻿using Opc.Ua;
+using Opc.UaFx;
 using opcUaPlc;
 
 class Program
@@ -25,9 +26,18 @@ class Program
         bool status;   
         status = _OpcUaConnection.Start(); // Avvio la connessione
         status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
-
+        
         var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
         Console.WriteLine($"Lettura variabile: Success={success}, Value={value}, Length={length}, StatusCode={statusCode}, Type={variableType}");
+
+        if (status)
+        {
+            // Avvia la scansione dei nodi e salva su file JSON
+            Console.WriteLine("\nAvvio scansione nodi...");
+            var nodeSearch = new OpcUaNodeSearch(_OpcUaConnection);
+            nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), "opcUaNodes.json");
+            Console.WriteLine("Scansione nodi terminata.");
+        }
 
         status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
 
