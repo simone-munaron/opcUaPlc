@@ -8,6 +8,7 @@ namespace opcUaPlc
     public class OpcUaConnection : IDisposable
     {
         private readonly OpcClient _client;
+        public OpcClient Client => _client;
         private readonly string _serverUrl;
 
         public OpcUaConnection(string serverUrl, string username, string password)

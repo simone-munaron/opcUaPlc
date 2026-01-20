@@ -28,7 +28,7 @@
 
 # OpcUaConnection.cs
 ### Description
-    Use for start, stop and check the connection status
+    Use for start, stop, check the connection status and read variables
     Use always global init
 ### Example global init
     _OpcUaConnection = new OpcUaConnection(serverUrl, username, password);
@@ -38,3 +38,5 @@
     status = _OpcUaConnection.Stop();
 ### Example connection status
     status = _OpcUaConnection.Status();
+### Example read variable
+    var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable("ns=3;s=\"IFM\".\"IOLink_SV4200\"[2].\"Sts\".\"Flow\"");
