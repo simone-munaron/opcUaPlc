@@ -4,8 +4,6 @@
 
 
 
-
-
 # OpcUaConfigReader.cs
 ### Description
     Use for read configuration on opcUaConfig.json:
@@ -24,8 +22,6 @@
 
 
 
-
-
 # OpcUaConnection.cs
 ### Description
     Use for start, stop, check the connection status and read variables
@@ -40,3 +36,14 @@
     status = _OpcUaConnection.Status();
 ### Example read variable
     var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable("ns=3;s=\"IFM\".\"IOLink_SV4200\"[2].\"Sts\".\"Flow\"");
+
+
+
+# OpcUaNodeSearch.cs
+### Description
+    Use to scan an OPC UA node and all its children recursively. It creates a .json file with a complete list of accessible variables.
+    For each variable, it saves: NodeId, DisplayName, Value, Length, StatusCode, and VariableType.
+### Example init
+    var nodeSearch = new OpcUaNodeSearch(_OpcUaConnection);
+### Example usage
+    nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), "opcUaNodes.json");
