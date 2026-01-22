@@ -35,7 +35,7 @@ class Program
             // Avvia la scansione dei nodi e salva su file JSON
             Console.WriteLine("\nAvvio scansione nodi...");
             var nodeSearch = new OpcUaNodeSearch(_OpcUaConnection);
-            nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), "opcUaNodes.json");
+            nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), @"C:\Prj\opcUaPlc\opcUaNodes.json");
             Console.WriteLine("Scansione nodi terminata.");
         }
 
