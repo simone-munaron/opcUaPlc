@@ -27,16 +27,23 @@ class Program
         status = _OpcUaConnection.Start(); // Avvio la connessione
         status = _OpcUaConnection.Status(); // Mostro lo stato della connessione
         
+        //Lettura variabile specifica di esempio
         var (success, value, length, statusCode, variableType) = _OpcUaConnection.ReadVariable(@"ns=3;s=""IFM"".""IOLink_SV4200""[2].""Sts"".""Flow"""); // Leggo una variabile di esempio
         Console.WriteLine($"Lettura variabile: Success={success}, Value={value}, Length={length}, StatusCode={statusCode}, Type={variableType}");
+        
 
         if (status)
         {
-            // Avvia la scansione dei nodi e salva su file JSON
-            Console.WriteLine("\nAvvio scansione nodi...");
+            //Instantiate the node search class
             var nodeSearch = new OpcUaNodeSearch(_OpcUaConnection);
-            nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), "opcUaNodes.json");
+            
+            // Esempio: Scansione e salvataggio di tutti i nodi a partire dalla radice "Objects"
+            nodeSearch.ScanAndSave(OpcObjectTypes.ObjectsFolder.ToString(), @"C:\Prj\opcUaPlc\opcUaNodes.json");
             Console.WriteLine("Scansione nodi terminata.");
+            
+            // Esempio: Scansione e salvataggio dei soli figli di un nodo specifico
+            string parentNodeId = @"ns=3;s=""IFM"".""IOLink_SV4200""";
+            nodeSearch.ScanChildrenAndSave(parentNodeId, @"C:\Prj\opcUaPlc\opcUaNodes_Children.json");
         }
 
         status = _OpcUaConnection.Stop(); // Chiudo la connessione alla fine del programma
