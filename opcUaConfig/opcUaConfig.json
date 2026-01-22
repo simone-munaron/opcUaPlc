@@ -1,0 +1,9 @@
+{
+  "serverUrl": "opc.tcp://10.69.131.1",
+  "username": "OPC_UA",
+  "password": "L3asOpc_uA",
+  "LogIntervalSeconds": 0.1,
+  "LogDatabasePath": "C:\\Prj\\opcUaPlc\\opcUaFiles\\opcUaLog.db",
+  "NodesListPath": "C:\\Prj\\opcUaPlc\\opcUaFiles\\opcUaNodesList.json",
+  "ProgramLogPath": "C:\\Prj\\opcUaPlc\\opcUaFiles\\ProgramLog.csv"
+}

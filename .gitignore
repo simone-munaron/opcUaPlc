@@ -2,6 +2,11 @@
 [Bb]in/
 [Oo]bj/
 CertificateStores/
+opcUaFiles/opcUaLog.db
+opcUaFiles/ProgramLog.csv
+opcUaFiles/opcUaLog.db-shm
+opcUaFiles/opcUaLog.db-wal
+
 
 # File specifici di VS Code
 .vscode/

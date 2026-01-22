@@ -1,5 +1,8 @@
 {
   "serverUrl": "opc.tcp://10.69.131.1",
   "username": "user",
-  "password": "password"
+  "password": "password",
+  "LogIntervalSeconds": 5,
+  "LogDatabasePath": "C:\\Prj\\opcUaPlc\\opcUaFiles\\dati_plc.db",
+  "NodesListPath": "C:\\Prj\\opcUaPlc\\opcUaFiles\\opcUaNodesList.json"
 }

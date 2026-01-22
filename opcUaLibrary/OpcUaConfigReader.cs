@@ -8,7 +8,7 @@ namespace opcUaPlc
     public class OpcConfigReader
     {
         // Ora la funzione accetta il percorso del file come parametro
-        public static (bool success, string serverUrl, string username, string password, string message) ReadConfig(string configFilePath)
+        public static (bool success, OpcConfigModel? config, string message) ReadConfig(string configFilePath)
         {
             try
             {
@@ -29,12 +29,12 @@ namespace opcUaPlc
                 var config = JsonSerializer.Deserialize<OpcConfigModel>(json, options);
 
                 //Console.WriteLine("[Config] Caricato con successo!");
-                return (true, config?.ServerUrl ?? "", config?.Username ?? "", config?.Password ?? "", "");
+                return (true, config, "");
             }
             catch (Exception ex)
             {
                 //Console.WriteLine($"[Config] Errore: {ex.Message}");
-                return (false, "", "", "", ex.Message);
+                return (false, null, ex.Message);
             }
         }
     }
@@ -44,5 +44,9 @@ namespace opcUaPlc
         public required string ServerUrl { get; set; }
         public required string Username { get; set; }
         public required string Password { get; set; }
+        public float LogIntervalSeconds { get; set; } = 10;
+        public string LogDatabasePath { get; set; } = "opc_log.db";
+        public string NodesListPath { get; set; } = "opcUaNodesList.json";
+        public string ProgramLogPath { get; set; } = "ProgramLog.csv";
     }
 }
